@@ -1,0 +1,3 @@
+#!/bin/bash
+
+printf "\x1bc" && cargo run "encode" ${1:-"test.test"} ${2:-"output.qoi"} && cargo run "decode" ${2:-"output.qoi"} ${3:-"output.test"}
