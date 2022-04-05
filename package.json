@@ -1,0 +1,25 @@
+{
+  "name": "qoi-img",
+  "version": "1.0.0",
+  "description": "qoi img format encoder and decoder plus displayer",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsj845/qoi-img.git"
+  },
+  "keywords": [
+    "qoi"
+  ],
+  "author": "Tristan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tsj845/qoi-img/issues"
+  },
+  "homepage": "https://github.com/tsj845/qoi-img#readme",
+  "devDependencies": {
+    "electron": "^18.0.1"
+  }
+}
