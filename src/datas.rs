@@ -108,9 +108,7 @@ pub fn addsub_with_wrap(n1: u8, n2: i16) -> u8 {
 }
 
 fn dif_test_helper(n1: u8, n2: u8) -> bool {
-    if n1 == n2 {
-        return true;
-    }
+    if n1 == n2 {return true;}
     if addsub_with_wrap(n1, -2) == n2 || addsub_with_wrap(n1, -1) == n2 || addsub_with_wrap(n1, 1) == n2 {
         return true;
     }
@@ -118,9 +116,7 @@ fn dif_test_helper(n1: u8, n2: u8) -> bool {
 }
 
 pub fn get_diff_val(n1: u8, n2: u8) -> u8 {
-    if n1 == n2 {
-        return 2;
-    }
+    if n1 == n2 {return 2;}
     if addsub_with_wrap(n1, -2) == n2 {
         return 0;
     }
@@ -134,5 +130,20 @@ pub fn get_diff_val(n1: u8, n2: u8) -> u8 {
 }
 
 pub fn test_for_diff(p1: PIX, p2: PIX) -> bool {
-    return dif_test_helper(p1.0, p2.0) & dif_test_helper(p1.1, p2.1) & dif_test_helper(p1.2, p2.2);
+    return dif_test_helper(p1.0, p2.0) && dif_test_helper(p1.1, p2.1) && dif_test_helper(p1.2, p2.2);
+}
+
+pub fn get_lumas(p1: PIX, p2: PIX) -> (u8, u8, u8) {
+    // let x = (get_luma_val(p1.0, p2.0, false), get_luma_val(p1.1, p2.1, true), get_luma_val(p1.2, p2.2, false));
+    // if x.0 == 64 || x.1 == 64 || x.2 == 64 {
+    //     return (64, 64, 64);
+    // }
+    // let dg = (x.1 + 32) as u8;
+    let dg: i16 = p2.1 as i16 - p1.1 as i16;
+    let dr: i16 = (p2.0 as i16 - p1.0 as i16) - dg;
+    let db: i16 = (p2.2 as i16 - p1.2 as i16) - dg;
+    if (dg < -32 || dg > 31) || (dr < -8 || dr > 7) || (db < -8 || db > 7) {
+        return (64, 64, 64);
+    }
+    return ((dr+8)as u8, (dg+32)as u8, (db+8)as u8);
 }

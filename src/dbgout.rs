@@ -86,6 +86,13 @@ pub fn dbgout_convert(dat: &Vec<u8>, oflag: bool) -> String {
                 3 => {
                     sres.push_str(&format!("( QoiOps::DIFF {} {} {} )\n", ((dat[i]>>4)&3)as i16 - 2, ((dat[i]>>2)&3)as i16 - 2, (dat[i]&3)as i16 - 2));
                 },
+                4 => {
+                    sres.push(HEXVALS[(dat[i+1] >> 4) as usize]);
+                    sres.push(HEXVALS[(dat[i+1] & 0xf) as usize]);
+                    let gd = ((dat[i]&0b00111111)as i16) - 32;
+                    sres.push_str(&format!(" ( QoiOps::LUMA {} {} {} )\n", (dat[i+1]>>4)as i16 - 8 + gd, gd, (dat[i+1]&0xf)as i16 - 8 + gd));
+                    i += 1;
+                },
                 5 => {
                     sres.push_str(&format!("( QoiOps::RUN {} )\n", dat[i]&(!(0b11<<6))));
                 },

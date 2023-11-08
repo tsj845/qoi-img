@@ -47,6 +47,13 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
                     lpix = cpix;
                     continue;
                 }
+                let lumas = get_lumas(lpix, cpix);
+                if lumas.0 != 64 {
+                    finbytes.push((1 << 7) | lumas.1);
+                    finbytes.push((lumas.0 << 4) | lumas.2);
+                    lpix = cpix;
+                    continue;
+                }
                 finbytes.push(254);
                 finbytes.push(cpix.0);
                 finbytes.push(cpix.1);
