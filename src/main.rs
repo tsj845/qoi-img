@@ -2,10 +2,7 @@ use std::env;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
-use qoi_img::datas::*;
-use qoi_img::decode::*;
-use qoi_img::encode::*;
-use qoi_img::dbgout::*;
+use qoi_img::*;
 
 /*
 qoi_header {
@@ -24,23 +21,24 @@ fn main() {
         println!("insufficient arguments");
         return;
     }
-    // println!("{:?}", args);
     if args[1] == "encode" {
         let mut f: File = File::open(&args[2]).unwrap();
         let mut x = parse_binary_to_tuple(&mut f);
-        let buf = gen_qoif(x.0, x.1, x.2, x.3, &mut x.4);
+        let buf = encode(x.0, x.1, x.2, x.3, &mut x.4);
         OpenOptions::new().write(true).create(true).truncate(true).open(&args[3]).unwrap().write_all(buf.as_slice()).unwrap();
         if args.len() > 3 {
-            OpenOptions::new().write(true).create(true).truncate(true).open(&args[4]).unwrap().write_all(dbgout_convert(&buf, true).as_bytes()).unwrap();
+            OpenOptions::new().write(true).create(true).truncate(true).open(&args[4]).unwrap().write_all(format_output(&buf, true, x.2 as usize).as_bytes()).unwrap();
         }
     } else if args[1] == "decode" {
         let mut f: File = File::open(&args[2]).unwrap();
         let mut buf = Vec::new();
         f.read_to_end(&mut buf).unwrap();
-        buf = gen_dqoi(&buf);
+        buf = decode(&buf);
         OpenOptions::new().write(true).create(true).truncate(true).open(&args[3]).unwrap().write_all(buf.as_slice()).unwrap();
         if args.len() > 3 {
-            OpenOptions::new().write(true).create(true).truncate(true).open(&args[4]).unwrap().write_all(dbgout_convert(&buf, false).as_bytes()).unwrap();
+            OpenOptions::new().write(true).create(true).truncate(true).open(&args[4]).unwrap().write_all(format_output(&buf, false, buf[8] as usize).as_bytes()).unwrap();
         }
+    } else {
+        println!("unrecognized option\nusage:\n    qoi-img [encode|decode] [input-file] [output-file] [debug-file]?");
     }
 }

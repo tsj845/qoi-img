@@ -1,12 +1,12 @@
 use crate::datas::*;
 
-pub fn dbgout_convert(dat: &Vec<u8>, oflag: bool) -> String {
+pub fn dbgout_convert(dat: &Vec<u8>, oflag: bool, ccount: usize) -> String {
     let l: usize = dat.len();
     let mut sres: String = String::with_capacity(l);
     let mut i: usize = 0;
     let mut j: usize = 0;
     let mut buf: [u8; 4] = [0; 4];
-    let w: usize = 4usize;
+    let w: usize = match ccount {0=>4,_=>ccount};
     if oflag {
         // magic bytes
         while j < 4 {
@@ -106,10 +106,8 @@ pub fn dbgout_convert(dat: &Vec<u8>, oflag: bool) -> String {
     sres.push(HEXVALS[(dat[i] & 0xf) as usize]);
     sres.push(' ');
     i += 1;
-    println!("{i}, {w}");
-    let offset = match oflag {true=>14,_=>10};
     loop {
-        if ((i - offset) % w) == 0 {
+        if ((i - 10) % w) == 0 {
             sres.push('(');
             sres.push(' ');
             for j in 0..w {

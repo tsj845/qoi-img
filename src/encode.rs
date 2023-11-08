@@ -56,7 +56,6 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
                 finbytes.push(cpix.2);
                 lpix = cpix;
             } else {
-                println!("ADDING RGBA");
                 finbytes.push(255);
                 finbytes.push(cpix.0);
                 finbytes.push(cpix.1);
