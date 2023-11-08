@@ -11,7 +11,6 @@ pub fn gen_dqoi(buf: &Vec<u8>) -> Vec<u8> {
     let mut i: usize = 14usize;
     while i < pl {
         let oc = QoiOps::get_op(buf[i]);
-        // println!("{}, {:?}", buf[i], oc);
         match oc as u8 {
             0 => {
                 lpix = (buf[i+1],buf[i+2],buf[i+3],lpix.3);

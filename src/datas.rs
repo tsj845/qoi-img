@@ -4,7 +4,6 @@ pub const MAGIC : [u8; 4] = [0x71, 0x6f, 0x69, 0x66];
 
 pub static HEXVALS : [char; 16] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
 
-// type QoiOp = (u8, u8); // expected value, bits to mask
 pub type PIX = (u8, u8, u8, u8); // pixel representation
 
 #[derive(Clone)]
@@ -134,11 +133,6 @@ pub fn test_for_diff(p1: PIX, p2: PIX) -> bool {
 }
 
 pub fn get_lumas(p1: PIX, p2: PIX) -> (u8, u8, u8) {
-    // let x = (get_luma_val(p1.0, p2.0, false), get_luma_val(p1.1, p2.1, true), get_luma_val(p1.2, p2.2, false));
-    // if x.0 == 64 || x.1 == 64 || x.2 == 64 {
-    //     return (64, 64, 64);
-    // }
-    // let dg = (x.1 + 32) as u8;
     let dg: i16 = p2.1 as i16 - p1.1 as i16;
     let dr: i16 = (p2.0 as i16 - p1.0 as i16) - dg;
     let db: i16 = (p2.2 as i16 - p1.2 as i16) - dg;

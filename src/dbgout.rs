@@ -6,7 +6,6 @@ pub fn dbgout_convert(dat: &Vec<u8>, oflag: bool) -> String {
     let mut i: usize = 0;
     let mut j: usize = 0;
     let mut buf: [u8; 4] = [0; 4];
-    // let w: usize = 12usize;
     let w: usize = 4usize;
     if oflag {
         // magic bytes

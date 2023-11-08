@@ -13,9 +13,7 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
     }
     let mut lpix: PIX = (0, 0, 0, 255);
     pixarr[get_apos(lpix)] = lpix;
-    // let mut cpix: PIX;
     let mut runcount: usize = 0;
-    // let mut i: usize = 0;
     let mut f = false;
     loop {
         let cpix = match pixels.next(){Some(x)=>x,None=>{f=true;(255-lpix.0,0,0,0)}};
@@ -41,8 +39,6 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
             }
             if cpix.3 == lpix.3 {
                 if test_for_diff(cpix, lpix) {
-                    // println!("{:?}, {:?}", cpix, lpix);
-                    // println!("{}, {}, {}", get_diff_val(lpix.0, cpix.0), get_diff_val(lpix.1, cpix.1), get_diff_val(lpix.2, cpix.2));
                     finbytes.push((1 << 6) | (get_diff_val(lpix.0, cpix.0) << 4) | (get_diff_val(lpix.1, cpix.1) << 2) | get_diff_val(lpix.2, cpix.2));
                     lpix = cpix;
                     continue;
@@ -59,7 +55,6 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
                 finbytes.push(cpix.1);
                 finbytes.push(cpix.2);
                 lpix = cpix;
-                // continue;
             } else {
                 println!("ADDING RGBA");
                 finbytes.push(255);
@@ -68,10 +63,7 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
                 finbytes.push(cpix.2);
                 finbytes.push(cpix.3);
                 lpix = cpix;
-                // continue;
             }
-            // lpix = cpix;
-            // finbytes.extend_from_slice(&[cpix.0,cpix.1,cpix.2,cpix.3]);
         }
     }
     finbytes.extend(std::iter::repeat(0).take(8));

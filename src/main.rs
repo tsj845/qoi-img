@@ -24,13 +24,11 @@ fn main() {
         println!("insufficient arguments");
         return;
     }
-    println!("{:?}", args);
-    // let exts = args[2].find(".").unwrap();
+    // println!("{:?}", args);
     if args[1] == "encode" {
         let mut f: File = File::open(&args[2]).unwrap();
         let mut x = parse_binary_to_tuple(&mut f);
         let buf = gen_qoif(x.0, x.1, x.2, x.3, &mut x.4);
-        println!("{:?}", &buf);
         OpenOptions::new().write(true).create(true).truncate(true).open(&args[3]).unwrap().write_all(buf.as_slice()).unwrap();
         if args.len() > 3 {
             OpenOptions::new().write(true).create(true).truncate(true).open(&args[4]).unwrap().write_all(dbgout_convert(&buf, true).as_bytes()).unwrap();
