@@ -83,6 +83,9 @@ pub fn dbgout_convert(dat: &Vec<u8>, oflag: bool) -> String {
                 2 => {
                     sres.push_str(&format!("( QoiOps::INDEX {} )\n", dat[i]&(!(0b11<<6))));
                 },
+                3 => {
+                    sres.push_str(&format!("( QoiOps::DIFF {} {} {} )\n", ((dat[i]>>4)&3)as i16 - 2, ((dat[i]>>2)&3)as i16 - 2, (dat[i]&3)as i16 - 2));
+                },
                 5 => {
                     sres.push_str(&format!("( QoiOps::RUN {} )\n", dat[i]&(!(0b11<<6))));
                 },

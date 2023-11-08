@@ -29,6 +29,12 @@ pub fn gen_dqoi(buf: &Vec<u8>) -> Vec<u8> {
                 lpix = pixarr[(buf[i]&63) as usize];
                 finbytes.extend_from_slice(&[lpix.0,lpix.1,lpix.2,lpix.3]);
             },
+            3 => {
+                let c: PIX = (addsub_with_wrap(lpix.0, ((buf[i]>>4)&3) as i16 - 2), addsub_with_wrap(lpix.1, ((buf[1]>>2)&3) as i16 - 2), addsub_with_wrap(lpix.2, (buf[i]&3) as i16 - 2), lpix.3);
+                lpix = c;
+                pixarr[get_apos(lpix)] = lpix;
+                finbytes.extend_from_slice(&[lpix.0,lpix.1,lpix.2,lpix.3]);
+            },
             5 => {
                 let s = &[lpix.0,lpix.1,lpix.2,lpix.3];
                 for _ in 0..(buf[i]&63) {

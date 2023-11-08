@@ -40,6 +40,13 @@ pub fn gen_qoif(width: u32, height: u32, channels: u8, colorspace: u8, pixels: &
                 pixarr[ind] = cpix;
             }
             if cpix.3 == lpix.3 {
+                if test_for_diff(cpix, lpix) {
+                    // println!("{:?}, {:?}", cpix, lpix);
+                    // println!("{}, {}, {}", get_diff_val(lpix.0, cpix.0), get_diff_val(lpix.1, cpix.1), get_diff_val(lpix.2, cpix.2));
+                    finbytes.push((1 << 6) | (get_diff_val(lpix.0, cpix.0) << 4) | (get_diff_val(lpix.1, cpix.1) << 2) | get_diff_val(lpix.2, cpix.2));
+                    lpix = cpix;
+                    continue;
+                }
                 finbytes.push(254);
                 finbytes.push(cpix.0);
                 finbytes.push(cpix.1);

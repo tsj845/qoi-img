@@ -95,3 +95,44 @@ pub fn parse_binary_to_tuple(f: &mut File) -> (u32, u32, u8, u8, Pixels) {
     f.read_to_end(&mut bin).unwrap();
     return (width, height, buf[0], buf[1], Pixels::new(bin, buf[0] as usize));
 }
+
+pub fn addsub_with_wrap(n1: u8, n2: i16) -> u8 {
+    let mut r = n1 as i16 + n2;
+    if r > 255 {
+        r -= 256;
+    }
+    if r < 0 {
+        r += 256;
+    }
+    return r as u8;
+}
+
+fn dif_test_helper(n1: u8, n2: u8) -> bool {
+    if n1 == n2 {
+        return true;
+    }
+    if addsub_with_wrap(n1, -2) == n2 || addsub_with_wrap(n1, -1) == n2 || addsub_with_wrap(n1, 1) == n2 {
+        return true;
+    }
+    return false;
+}
+
+pub fn get_diff_val(n1: u8, n2: u8) -> u8 {
+    if n1 == n2 {
+        return 2;
+    }
+    if addsub_with_wrap(n1, -2) == n2 {
+        return 0;
+    }
+    if addsub_with_wrap(n1, -1) == n2 {
+        return 1;
+    }
+    if addsub_with_wrap(n1, 1) == n2 {
+        return 3;
+    }
+    return 4;
+}
+
+pub fn test_for_diff(p1: PIX, p2: PIX) -> bool {
+    return dif_test_helper(p1.0, p2.0) & dif_test_helper(p1.1, p2.1) & dif_test_helper(p1.2, p2.2);
+}
